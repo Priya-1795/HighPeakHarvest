@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Enquiries - Admin</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --green-deep: #1B3A27;
+  --gold: #C9A84C;
+  --cream: #F5F0E6;
+  --text-dark: #1C1C1A;
+  --sans: 'Jost', sans-serif;
+}
+
+body {
+  font-family: var(--sans);
+  background: var(--cream);
+  color: var(--text-dark);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+header {
+  background: var(--green-deep);
+  color: white;
+  padding: 2rem 0;
+  margin-bottom: 2rem;
+  border-bottom: 3px solid var(--gold);
+}
+
+header .inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header h1 { font-size: 1.5rem; }
+
+header a { color: var(--gold); text-decoration: none; }
+
+.section {
+  background: white;
+  padding: 2rem;
+  border-radius: 2px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.section h2 {
+  font-size: 1.4rem;
+  margin-bottom: 1.5rem;
+  color: var(--green-deep);
+  border-bottom: 2px solid var(--gold);
+  padding-bottom: 1rem;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table th {
+  background: var(--green-deep);
+  color: white;
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+table td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #eee;
+}
+
+table tr:hover {
+  background: #f5f5f5;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 2rem;
+  color: #999;
+}
+
+.date {
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.nav-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 2px solid #ddd;
+  margin-bottom: 1.5rem;
+}
+
+.nav-tabs a {
+  padding: 0.75rem 1.5rem;
+  color: #666;
+  text-decoration: none;
+  border-bottom: 3px solid transparent;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.nav-tabs a.active {
+  color: var(--green-deep);
+  border-bottom-color: var(--gold);
+}
+
+.nav-tabs a:hover {
+  color: var(--text-dark);
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="inner">
+    <h1>Enquiries & Signup Requests</h1>
+    <a href="/admin">← Back to dashboard</a>
+  </div>
+</header>
+
+<div class="container">
+  
+  <div class="nav-tabs">
+    <a href="/admin">Products</a>
+    <a href="/admin/enquiries" class="active">Enquiries</a>
+  </div>
+
+  <div class="section">
+    <h2>📋 Trade Account Signup Requests</h2>
+    
+    <% if (enquiries.length === 0) { %>
+      <div class="empty-state">
+        <p>No enquiries yet.</p>
+      </div>
+    <% } else { %>
+      <table>
+        <thead>
+          <tr>
+            <th>Contact Name</th>
+            <th>Business</th>
+            <th>Type</th>
+            <th>Location</th>
+            <th>Email</th>
+            <th>Submitted</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% enquiries.forEach(enquiry => { %>
+            <tr>
+              <td><strong><%= enquiry.name %></strong></td>
+              <td><%= enquiry.business_name %></td>
+              <td><span style="background: #e3f2fd; padding: 0.2rem 0.5rem; border-radius: 2px; font-size: 0.8rem;"><%= enquiry.business_type %></span></td>
+              <td><%= enquiry.town %></td>
+              <td><a href="mailto:<%= enquiry.email %>"><%= enquiry.email %></a></td>
+              <td class="date"><%= new Date(enquiry.created_at).toLocaleDateString() %></td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    <% } %>
+  </div>
+
+</div>
+
+</body>
+</html>

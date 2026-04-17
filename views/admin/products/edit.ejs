@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Edit Product - Admin</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --green-deep: #1B3A27;
+  --gold: #C9A84C;
+  --cream: #F5F0E6;
+  --text-dark: #1C1C1A;
+  --sans: 'Jost', sans-serif;
+}
+
+body {
+  font-family: var(--sans);
+  background: var(--cream);
+  color: var(--text-dark);
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+header {
+  background: var(--green-deep);
+  color: white;
+  padding: 2rem 0;
+  margin-bottom: 2rem;
+  border-bottom: 3px solid var(--gold);
+}
+
+header .inner {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header h1 { font-size: 1.5rem; }
+
+header a { color: var(--gold); text-decoration: none; }
+
+.section {
+  background: white;
+  padding: 2rem;
+  border-radius: 2px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: var(--text-dark);
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid #ddd;
+  border-radius: 2px;
+  font-family: var(--sans);
+  font-size: 0.95rem;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(201,168,76,0.1);
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.btn {
+  display: inline-block;
+  padding: 0.75rem 2rem;
+  background: var(--gold);
+  color: var(--green-deep);
+  text-decoration: none;
+  border-radius: 2px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-right: 1rem;
+}
+
+.btn:hover {
+  background: #E2C97A;
+}
+
+.btn.secondary {
+  background: #999;
+  color: white;
+}
+
+.btn.secondary:hover {
+  background: #777;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="inner">
+    <h1>Edit Product</h1>
+    <a href="/admin">← Back to dashboard</a>
+  </div>
+</header>
+
+<div class="container">
+  <div class="section">
+    <form id="product-form">
+      <div class="form-group">
+        <label>Product Name *</label>
+        <input type="text" name="name" value="<%= product.name %>" required>
+      </div>
+      
+      <div class="form-row">
+        <div class="form-group">
+          <label>Category *</label>
+          <select name="category" required>
+            <option value="Microgreens" <%= product.category === 'Microgreens' ? 'selected' : '' %>>Microgreens</option>
+            <option value="Mushrooms" <%= product.category === 'Mushrooms' ? 'selected' : '' %>>Fresh Mushrooms</option>
+            <option value="Smoked" <%= product.category === 'Smoked' ? 'selected' : '' %>>Smoked</option>
+            <option value="Snack" <%= product.category === 'Snack' ? 'selected' : '' %>>Snack</option>
+            <option value="Other" <%= product.category === 'Other' ? 'selected' : '' %>>Other</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label>Status *</label>
+          <select name="status" required>
+            <option value="In stock" <%= product.status === 'In stock' ? 'selected' : '' %>>In stock</option>
+            <option value="Limited" <%= product.status === 'Limited' ? 'selected' : '' %>>Limited</option>
+            <option value="Ask us" <%= product.status === 'Ask us' ? 'selected' : '' %>>Ask us</option>
+          </select>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label>Pack Sizes *</label>
+        <input type="text" name="pack_sizes" value="<%= product.pack_sizes %>" required>
+      </div>
+      
+      <div>
+        <button type="submit" class="btn">Update Product</button>
+        <a href="/admin" class="btn secondary">Cancel</a>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+document.getElementById('product-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const formData = new FormData(e.target);
+  const data = Object.fromEntries(formData);
+  
+  try {
+    const response = await fetch('/admin/products/<%= product.id %>', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    
+    if (response.ok) {
+      alert('✓ Product updated successfully!');
+      window.location.href = '/admin';
+    } else {
+      alert('Failed to update product');
+    }
+  } catch (error) {
+    alert('Error updating product');
+  }
+});
+</script>
+
+</body>
+</html>

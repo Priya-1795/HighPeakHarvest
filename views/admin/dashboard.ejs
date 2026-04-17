@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard - High Peak Harvest</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --green-deep: #1B3A27;
+  --gold: #C9A84C;
+  --cream: #F5F0E6;
+  --text-dark: #1C1C1A;
+  --sans: 'Jost', sans-serif;
+}
+
+body {
+  font-family: var(--sans);
+  background: var(--cream);
+  color: var(--text-dark);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+header {
+  background: var(--green-deep);
+  color: white;
+  padding: 2rem 0;
+  margin-bottom: 2rem;
+  border-bottom: 3px solid var(--gold);
+}
+
+header .inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header h1 {
+  font-size: 1.8rem;
+}
+
+header p {
+  opacity: 0.8;
+  font-size: 0.9rem;
+}
+
+.header-links a {
+  color: var(--gold);
+  text-decoration: none;
+  margin-left: 2rem;
+  font-size: 0.9rem;
+}
+
+.header-links a:hover {
+  text-decoration: underline;
+}
+
+.section {
+  background: white;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  border-radius: 2px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.section h2 {
+  font-size: 1.4rem;
+  margin-bottom: 1.5rem;
+  color: var(--green-deep);
+  border-bottom: 2px solid var(--gold);
+  padding-bottom: 1rem;
+}
+
+.btn {
+  display: inline-block;
+  padding: 0.6rem 1.2rem;
+  background: var(--gold);
+  color: var(--green-deep);
+  text-decoration: none;
+  border-radius: 2px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-right: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.btn:hover {
+  background: #E2C97A;
+}
+
+.btn.secondary {
+  background: #999;
+  color: white;
+}
+
+.btn.secondary:hover {
+  background: #777;
+}
+
+.btn.danger {
+  background: #d32f2f;
+  color: white;
+}
+
+.btn.danger:hover {
+  background: #c62828;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1rem;
+}
+
+table th {
+  background: var(--green-deep);
+  color: white;
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+table td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #eee;
+}
+
+table tr:hover {
+  background: #f5f5f5;
+}
+
+.actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.actions a, .actions button {
+  padding: 0.4rem 0.8rem;
+  font-size: 0.8rem;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 2rem;
+  color: #999;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.card {
+  background: #f5f5f5;
+  padding: 1.5rem;
+  border-radius: 2px;
+  text-align: center;
+}
+
+.card h3 {
+  font-size: 2rem;
+  color: var(--gold);
+  margin-bottom: 0.5rem;
+}
+
+.card p {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.nav-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 2px solid #ddd;
+  margin-bottom: 1.5rem;
+}
+
+.nav-tabs a {
+  padding: 0.75rem 1.5rem;
+  color: #666;
+  text-decoration: none;
+  border-bottom: 3px solid transparent;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.nav-tabs a.active {
+  color: var(--green-deep);
+  border-bottom-color: var(--gold);
+}
+
+.nav-tabs a:hover {
+  color: var(--text-dark);
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="inner">
+    <div>
+      <h1>🌱 Admin Dashboard</h1>
+      <p>High Peak Harvest - Stock Management</p>
+    </div>
+    <div class="header-links">
+      <span>Logged in: <strong><%= adminEmail %></strong></span>
+      <a href="/admin/logout">Logout</a>
+      <a href="/">← Back to site</a>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+  
+  <div class="grid">
+    <div class="card">
+      <h3><%= products.length %></h3>
+      <p>Products in database</p>
+    </div>
+    <div class="card">
+      <h3>📊</h3>
+      <p>Real-time inventory</p>
+    </div>
+  </div>
+
+  <div class="nav-tabs">
+    <a href="#products" class="active">Products</a>
+    <a href="/admin/enquiries">Enquiries</a>
+  </div>
+
+  <div class="section" id="products">
+    <h2>📦 Manage Products</h2>
+    
+    <a href="/admin/products/new" class="btn">+ Add New Product</a>
+    
+    <% if (products.length === 0) { %>
+      <div class="empty-state">
+        <p>No products yet. <a href="/admin/products/new">Create one now</a></p>
+      </div>
+    <% } else { %>
+      <table>
+        <thead>
+          <tr>
+            <th>Product Name</th>
+            <th>Category</th>
+            <th>Pack Sizes</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% products.forEach(product => { %>
+            <tr>
+              <td><strong><%= product.name %></strong></td>
+              <td><%= product.category %></td>
+              <td><%= product.pack_sizes %></td>
+              <td>
+                <span style="background: <%= product.status === 'In stock' ? '#c8e6c9' : '#fff9c4' %>; padding: 0.3rem 0.6rem; border-radius: 2px; font-size: 0.8rem;">
+                  <%= product.status %>
+                </span>
+              </td>
+              <td>
+                <div class="actions">
+                  <a href="/admin/products/<%= product.id %>/edit" class="btn" style="display: inline-block; margin: 0; padding: 0.4rem 0.8rem; font-size: 0.8rem;">Edit</a>
+                  <form method="POST" action="/admin/products/<%= product.id %>/delete" style="display: inline;" onsubmit="return confirm('Delete this product?');">
+                    <button type="submit" class="btn danger" style="display: inline; margin: 0; padding: 0.4rem 0.8rem; font-size: 0.8rem;">Delete</button>
+                  </form>
+                </div>
+              </td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    <% } %>
+  </div>
+
+</div>
+
+</body>
+</html>
